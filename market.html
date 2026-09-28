@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Crop Connect - Market Rates</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    font-family:Arial, sans-serif;
+    background:#f3f8f3;
+    color:#24352a;
+}
+
+
+/* ================= HEADER ================= */
+
+.header{
+    background:linear-gradient(135deg,#176b3a,#4f9565);
+    color:white;
+    padding:28px 25px;
+    border-radius:0 0 25px 25px;
+}
+
+.header h1{
+    margin:0 0 8px;
+    font-size:32px;
+}
+
+.header p{
+    margin:0;
+    font-size:16px;
+}
+
+
+/* ================= BACK BUTTON ================= */
+
+.back-button{
+    display:inline-block;
+
+    width:auto;
+    height:auto;
+
+    padding:9px 16px;
+    margin-bottom:18px;
+
+    border:1px solid rgba(255,255,255,.5);
+    border-radius:10px;
+
+    background:rgba(255,255,255,.15);
+    color:white;
+
+    font-size:14px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+.back-button:hover{
+    background:rgba(255,255,255,.25);
+}
+
+
+/* ================= CONTAINER ================= */
+
+.container{
+    width:92%;
+    max-width:950px;
+    margin:25px auto;
+}
+
+
+/* ================= CARD ================= */
+
+.card{
+    background:white;
+    padding:24px;
+    margin-bottom:20px;
+    border-radius:18px;
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.card h2{
+    margin-top:0;
+    color:#176b3a;
+}
+
+
+/* ================= FORM ================= */
+
+.form{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:14px;
+}
+
+select{
+    width:100%;
+    height:52px;
+
+    padding:0 14px;
+
+    border:1px solid #cbd8cd;
+    border-radius:10px;
+
+    background:white;
+
+    font-size:16px;
+}
+
+
+/* ================= CHECK BUTTON ================= */
+
+#checkButton{
+    grid-column:1 / 3;
+
+    height:52px;
+
+    border:0;
+    border-radius:10px;
+
+    background:#176b3a;
+    color:white;
+
+    font-size:17px;
+    font-weight:bold;
+
+    cursor:pointer;
+}
+
+#checkButton:hover{
+    background:#0d542d;
+}
+
+
+/* ================= STATUS / ERROR ================= */
+
+.status,
+.error{
+    display:none;
+
+    margin-top:15px;
+    padding:13px;
+
+    border-radius:10px;
+}
+
+.status{
+    background:#e8f6eb;
+    color:#176b3a;
+}
+
+.error{
+    background:#ffeded;
+    color:#a32323;
+}
+
+
+/* ================= PRICE CARDS ================= */
+
+.price-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+
+    gap:15px;
+
+    margin-bottom:20px;
+}
+
+.price-card{
+    background:white;
+
+    padding:22px;
+
+    border-radius:18px;
+
+    box-shadow:0 4px 15px rgba(0,0,0,.08);
+}
+
+.price-card h3{
+    margin:0 0 12px;
+
+    font-size:14px;
+
+    color:#68756c;
+}
+
+.price-card p{
+    margin:0;
+
+    font-size:20px;
+
+    font-weight:bold;
+
+    color:#176b3a;
+}
+
+
+/* ================= MARKET INFORMATION ================= */
+
+.info-row{
+    display:flex;
+
+    justify-content:space-between;
+
+    gap:20px;
+
+    padding:13px 0;
+
+    border-bottom:1px solid #e7eee8;
+}
+
+.info-row:last-child{
+    border-bottom:0;
+}
+
+.info-row strong{
+    text-align:right;
+}
+
+
+/* ================= TREND ================= */
+
+.trend{
+    background:#f0f7f1;
+
+    padding:18px;
+
+    border-radius:12px;
+}
+
+.trend-bar{
+    height:18px;
+
+    background:#dceadd;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    margin-top:15px;
+}
+
+.trend-fill{
+    height:100%;
+
+    width:50%;
+
+    background:#176b3a;
+
+    border-radius:20px;
+
+    transition:.5s;
+}
+
+
+/* ================= NOTE ================= */
+
+.note{
+    font-size:13px;
+
+    color:#68756c;
+
+    margin-top:12px;
+}
+
+
+/* ================= FOOTER ================= */
+
+.footer{
+    text-align:center;
+
+    padding:25px;
+
+    color:#718078;
+
+    font-size:13px;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media(max-width:650px){
+
+    .form{
+        grid-template-columns:1fr;
+    }
+
+    #checkButton{
+        grid-column:1;
+    }
+
+    .price-grid{
+        grid-template-columns:1fr;
+    }
+
+    .header h1{
+        font-size:27px;
+    }
+
+    .container{
+        width:94%;
+    }
+
+    .info-row{
+        font-size:14px;
+    }
+
+}
+
+</style>
+</head>
+
+
+<body>
+
+
+<!-- ================= HEADER ================= -->
+
+<div class="header">
+
+    <!-- BACK BUTTON -->
+
+    <button
+        class="back-button"
+        onclick="window.location.href='index.html'"
+    >
+        ← Back to Home
+    </button>
+
+
+    <h1>🌾 Market Rates</h1>
+
+    <p>
+        Check agricultural mandi prices and price trends
+    </p>
+
+</div>
+
+
+
+<div class="container">
+
+
+    <!-- ================= SEARCH CARD ================= -->
+
+    <div class="card">
+
+        <h2>Check Market Price</h2>
+
+        <div class="form">
+
+            <select id="city">
+
+                <option value="">
+                    Select City / District
+                </option>
+
+                <option value="Pune">Pune</option>
+                <option value="Nashik">Nashik</option>
+                <option value="Nagpur">Nagpur</option>
+                <option value="Ahmednagar">Ahmednagar</option>
+                <option value="Aurangabad">Aurangabad</option>
+                <option value="Kolhapur">Kolhapur</option>
+                <option value="Solapur">Solapur</option>
+                <option value="Satara">Satara</option>
+                <option value="Sangli">Sangli</option>
+                <option value="Jalgaon">Jalgaon</option>
+                <option value="Dhule">Dhule</option>
+                <option value="Amravati">Amravati</option>
+                <option value="Akola">Akola</option>
+                <option value="Latur">Latur</option>
+                <option value="Nanded">Nanded</option>
+                <option value="Beed">Beed</option>
+                <option value="Osmanabad">Osmanabad</option>
+                <option value="Ratnagiri">Ratnagiri</option>
+                <option value="Sindhudurg">Sindhudurg</option>
+                <option value="Wardha">Wardha</option>
+                <option value="Yavatmal">Yavatmal</option>
+                <option value="Buldhana">Buldhana</option>
+
+            </select>
+
+
+            <select id="crop">
+
+                <option value="">
+                    Select Crop
+                </option>
+
+                <option value="Onion">Onion</option>
+                <option value="Tomato">Tomato</option>
+                <option value="Potato">Potato</option>
+                <option value="Wheat">Wheat</option>
+                <option value="Rice">Rice</option>
+                <option value="Soyabean">Soyabean</option>
+                <option value="Cotton">Cotton</option>
+
+            </select>
+
+
+            <button
+                id="checkButton"
+                type="button"
+            >
+                🔍 Check Price
+            </button>
+
+        </div>
+
+
+        <div
+            id="status"
+            class="status"
+        ></div>
+
+
+        <div
+            id="error"
+            class="error"
+        ></div>
+
+    </div>
+
+
+
+    <!-- ================= PRICE CARDS ================= -->
+
+    <div class="price-grid">
+
+
+        <div class="price-card">
+
+            <h3>
+                Minimum Price
+            </h3>
+
+            <p id="minPrice">
+                —
+            </p>
+
+        </div>
+
+
+        <div class="price-card">
+
+            <h3>
+                Modal Price
+            </h3>
+
+            <p id="modalPrice">
+                —
+            </p>
+
+        </div>
+
+
+        <div class="price-card">
+
+            <h3>
+                Maximum Price
+            </h3>
+
+            <p id="maxPrice">
+                —
+            </p>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= MARKET INFORMATION ================= -->
+
+    <div class="card">
+
+        <h2>
+            📍 Market Information
+        </h2>
+
+
+        <div class="info-row">
+
+            <span>
+                Crop
+            </span>
+
+            <strong id="cropInfo">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>
+                Selected District
+            </span>
+
+            <strong id="selectedDistrictInfo">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>
+                Actual Market District
+            </span>
+
+            <strong id="districtInfo">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>
+                Market
+            </span>
+
+            <strong id="marketInfo">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>
+                Variety
+            </span>
+
+            <strong id="varietyInfo">
+                —
+            </strong>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>
+                Price Date
+            </span>
+
+            <strong id="dateInfo">
+                —
+            </strong>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= PRICE TREND ================= -->
+
+    <div class="card">
+
+        <h2>
+            📈 Price Trend
+        </h2>
+
+
+        <div class="trend">
+
+            <div id="trendText">
+
+                Select a district and crop
+                to check the price.
+
+            </div>
+
+
+            <div class="trend-bar">
+
+                <div
+                    id="trendFill"
+                    class="trend-fill"
+                ></div>
+
+            </div>
+
+        </div>
+
+
+        <div class="note">
+
+            Prices are mandi wholesale prices
+            and may change with market conditions.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= FOOTER ================= -->
+
+<div class="footer">
+
+    Crop Connect • Market Rates
+
+</div>
+
+
+
+<script>
+
+/* ==============================
+   API
+============================== */
+
+const API =
+"https://mandi-api.onrender.com/v1/prices";
+
+
+
+/* ==============================
+   BUTTON EVENT
+============================== */
+
+document
+    .getElementById("checkButton")
+    .addEventListener(
+        "click",
+        checkPrice
+    );
+
+
+
+/* ==============================
+   CHECK PRICE
+============================== */
+
+function checkPrice(){
+
+    const city =
+        document
+        .getElementById("city")
+        .value;
+
+
+    const crop =
+        document
+        .getElementById("crop")
+        .value;
+
+
+    const status =
+        document
+        .getElementById("status");
+
+
+    const error =
+        document
+        .getElementById("error");
+
+
+
+    /* CITY VALIDATION */
+
+    if(!city){
+
+        showError(
+            "Please select a city / district."
+        );
+
+        return;
+    }
+
+
+
+    /* CROP VALIDATION */
+
+    if(!crop){
+
+        showError(
+            "Please select a crop."
+        );
+
+        return;
+    }
+
+
+
+    error.style.display =
+        "none";
+
+
+    status.style.display =
+        "block";
+
+
+    status.innerHTML =
+        "⏳ Checking " +
+        crop +
+        " prices...";
+
+
+
+    /* API URL */
+
+    const url =
+        API +
+        "?state=Maharashtra&commodity=" +
+        encodeURIComponent(crop);
+
+
+
+    /* FETCH API */
+
+    fetch(url)
+
+    .then(function(response){
+
+        if(!response.ok){
+
+            throw new Error(
+                "API Error " +
+                response.status
+            );
+
+        }
+
+        return response.json();
+
+    })
+
+
+    .then(function(result){
+
+        if(
+            !result ||
+            !Array.isArray(result.data) ||
+            result.data.length === 0
+        ){
+
+            throw new Error(
+                "No price records available."
+            );
+
+        }
+
+
+        const records =
+            result.data;
+
+
+
+        /* ==========================
+           FIND SELECTED DISTRICT
+        ========================== */
+
+        let selectedRecords =
+            records.filter(
+                function(item){
+
+                    if(!item.district){
+                        return false;
+                    }
+
+
+                    return sameDistrict(
+                        city,
+                        item.district
+                    );
+
+                }
+            );
+
+
+
+        /* ==========================
+           EXACT / ALIAS MATCH
+        ========================== */
+
+        if(
+            selectedRecords.length > 0
+        ){
+
+            displayRecord(
+                selectedRecords[0],
+                city,
+                false
+            );
+
+
+            status.innerHTML =
+                "✅ Price found for " +
+                city +
+                " — " +
+                crop;
+
+
+            return;
+        }
+
+
+
+        /* ==========================
+           NO DISTRICT RECORD
+        ========================== */
+
+        const latest =
+            getLatestRecord(
+                records
+            );
+
+
+        displayRecord(
+            latest,
+            city,
+            true
+        );
+
+
+        status.innerHTML =
+            "ℹ️ No current " +
+            crop +
+            " record was found for " +
+            city +
+            ". Showing the latest available Maharashtra market price.";
+
+    })
+
+
+    .catch(function(errorObject){
+
+        console.log(errorObject);
+
+
+        status.style.display =
+            "none";
+
+
+        showError(
+            "Unable to get market data right now. Please try again."
+        );
+
+    });
+
+}
+
+
+
+/* ==============================
+   DISTRICT MATCHING
+============================== */
+
+function sameDistrict(
+    selected,
+    actual
+){
+
+    const a =
+        normalize(selected);
+
+
+    const b =
+        normalize(actual);
+
+
+
+    if(
+        b.includes(a) ||
+        a.includes(b)
+    ){
+
+        return true;
+
+    }
+
+
+
+    const aliases = {
+
+        "ahmednagar":[
+            "ahmednagar",
+            "ahilyanagar"
+        ],
+
+        "aurangabad":[
+            "aurangabad",
+            "chhatrapati sambhajinagar",
+            "sambhajinagar"
+        ],
+
+        "osmanabad":[
+            "osmanabad",
+            "dharashiv"
+        ]
+
+    };
+
+
+
+    if(aliases[a]){
+
+        return aliases[a].some(
+            function(name){
+
+                return b.includes(
+                    normalize(name)
+                );
+
+            }
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+
+/* ==============================
+   NORMALIZE
+============================== */
+
+function normalize(text){
+
+    return String(text)
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g," ");
+
+}
+
+
+
+/* ==============================
+   GET LATEST RECORD
+============================== */
+
+function getLatestRecord(
+    records
+){
+
+    return records.reduce(
+        function(
+            latest,
+            current
+        ){
+
+            if(!latest){
+
+                return current;
+
+            }
+
+
+            const latestDate =
+                new Date(
+                    latest.arrival_date ||
+                    "1900-01-01"
+                );
+
+
+            const currentDate =
+                new Date(
+                    current.arrival_date ||
+                    "1900-01-01"
+                );
+
+
+            if(
+                currentDate >
+                latestDate
+            ){
+
+                return current;
+
+            }
+
+
+            return latest;
+
+        },
+        null
+    );
+
+}
+
+
+
+/* ==============================
+   DISPLAY RECORD
+============================== */
+
+function displayRecord(
+    item,
+    selectedCity,
+    fallback
+){
+
+    document
+        .getElementById("minPrice")
+        .innerHTML =
+        formatPrice(
+            item.min_price
+        );
+
+
+
+    document
+        .getElementById("modalPrice")
+        .innerHTML =
+        formatPrice(
+            item.modal_price
+        );
+
+
+
+    document
+        .getElementById("maxPrice")
+        .innerHTML =
+        formatPrice(
+            item.max_price
+        );
+
+
+
+    document
+        .getElementById("cropInfo")
+        .innerHTML =
+        item.commodity || "—";
+
+
+
+    document
+        .getElementById(
+            "selectedDistrictInfo"
+        )
+        .innerHTML =
+        selectedCity;
+
+
+
+    document
+        .getElementById("districtInfo")
+        .innerHTML =
+        item.district || "—";
+
+
+
+    document
+        .getElementById("marketInfo")
+        .innerHTML =
+        item.market || "—";
+
+
+
+    document
+        .getElementById("varietyInfo")
+        .innerHTML =
+        item.variety || "—";
+
+
+
+    document
+        .getElementById("dateInfo")
+        .innerHTML =
+        item.arrival_date || "—";
+
+
+
+    /* ==========================
+       PRICE POSITION
+    ========================== */
+
+    const min =
+        Number(
+            item.min_price
+        );
+
+
+    const modal =
+        Number(
+            item.modal_price
+        );
+
+
+    const max =
+        Number(
+            item.max_price
+        );
+
+
+
+    let percentage = 50;
+
+
+
+    if(
+        !isNaN(min) &&
+        !isNaN(modal) &&
+        !isNaN(max) &&
+        max > min
+    ){
+
+        percentage =
+            (
+                (modal - min) /
+                (max - min)
+            ) * 100;
+
+    }
+
+
+
+    percentage =
+        Math.max(
+            5,
+            Math.min(
+                100,
+                percentage
+            )
+        );
+
+
+
+    document
+        .getElementById(
+            "trendFill"
+        )
+        .style.width =
+        percentage + "%";
+
+
+
+    const trendText =
+        document
+        .getElementById(
+            "trendText"
+        );
+
+
+
+    if(fallback){
+
+        trendText.innerHTML =
+            "⚠️ No current record was found for " +
+            "<b>" +
+            selectedCity +
+            "</b>. " +
+            "The displayed price is from " +
+            "<b>" +
+            (
+                item.market ||
+                item.district ||
+                "another Maharashtra market"
+            ) +
+            "</b>.";
+
+    }
+
+    else{
+
+        trendText.innerHTML =
+            "📈 Current modal price: <b>" +
+            formatPrice(
+                item.modal_price
+            ) +
+            "</b>";
+
+    }
+
+}
+
+
+
+/* ==============================
+   FORMAT PRICE
+============================== */
+
+function formatPrice(
+    value
+){
+
+    if(
+        value === null ||
+        value === undefined ||
+        value === ""
+    ){
+
+        return "—";
+
+    }
+
+
+
+    const number =
+        Number(value);
+
+
+
+    if(isNaN(number)){
+
+        return "—";
+
+    }
+
+
+
+    return (
+        "₹" +
+        number.toLocaleString("en-IN") +
+        " / quintal"
+    );
+
+}
+
+
+
+/* ==============================
+   ERROR
+============================== */
+
+function showError(
+    message
+){
+
+    const error =
+        document
+        .getElementById(
+            "error"
+        );
+
+
+    const status =
+        document
+        .getElementById(
+            "status"
+        );
+
+
+    status.style.display =
+        "none";
+
+
+    error.innerHTML =
+        "⚠️ " +
+        message;
+
+
+    error.style.display =
+        "block";
+
+}
+
+</script>
+
+</body>
+</html>

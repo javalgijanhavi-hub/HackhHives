@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Crop Advisor - Government Schemes</title>
+
+<style>
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+    font-family:Arial,sans-serif;
+}
+
+body{
+    background:#f2f7f4;
+    color:#26352c;
+}
+
+/* HEADER */
+
+.header{
+    background:#006b2d;
+    color:white;
+    padding:20px;
+}
+
+.header h1{
+    font-size:25px;
+}
+
+.header p{
+    margin-top:5px;
+    font-size:13px;
+    opacity:.9;
+}
+
+/* CONTAINER */
+
+.container{
+    max-width:650px;
+    margin:auto;
+    padding:16px;
+}
+
+/* FILTER */
+
+.filters{
+    display:flex;
+    gap:8px;
+    margin-bottom:14px;
+}
+
+.filter{
+    border:none;
+    padding:10px 17px;
+    border-radius:22px;
+    background:white;
+    color:#555;
+    cursor:pointer;
+    box-shadow:0 2px 5px rgba(0,0,0,.08);
+}
+
+.filter.active{
+    background:#00783a;
+    color:white;
+}
+
+.count{
+    color:#858e89;
+    font-size:13px;
+    margin-bottom:12px;
+}
+
+/* CARD */
+
+.scheme{
+    background:white;
+    border-radius:16px;
+    margin-bottom:15px;
+    overflow:hidden;
+    box-shadow:0 2px 8px rgba(0,0,0,.12);
+    border:1px solid #e1e8e3;
+}
+
+.scheme-label{
+    padding:10px 14px;
+    background:#e2f5eb;
+    color:#27734b;
+    font-size:12px;
+    font-weight:bold;
+}
+
+.scheme-label.central{
+    background:#fff1c5;
+    color:#956514;
+}
+
+.scheme-content{
+    padding:16px;
+}
+
+.scheme-title{
+    font-size:17px;
+    font-weight:bold;
+    margin-bottom:8px;
+}
+
+.scheme-description{
+    font-size:13px;
+    line-height:1.5;
+    color:#68736c;
+}
+
+/* BUTTON */
+
+.details-btn{
+    width:100%;
+    margin-top:14px;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #cfdcd2;
+    background:#f6faf7;
+    color:#087237;
+    font-size:14px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.details-btn:hover{
+    background:#e4f3e7;
+}
+
+/* DETAILS */
+
+.details-box{
+    display:none;
+    padding:16px;
+    background:#f7fbf8;
+    border-top:1px solid #dce8df;
+}
+
+.details-box h3{
+    color:#087237;
+    font-size:14px;
+    margin-bottom:5px;
+    margin-top:12px;
+}
+
+.details-box h3:first-child{
+    margin-top:0;
+}
+
+.details-box p{
+    color:#59655d;
+    font-size:13px;
+    line-height:1.55;
+}
+
+/* NO RESULT */
+
+.no-result{
+    display:none;
+    text-align:center;
+    padding:30px;
+    color:#777;
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<!-- HEADER -->
+
+<div class="header">
+
+    <h1>Government Schemes</h1>
+
+    <p>Explore agricultural schemes and benefits</p>
+
+</div>
+
+<div class="container">
+
+<!-- BACK BUTTON -->
+<button class="back-btn" onclick="history.back()">
+    ← Back
+</button>
+
+
+<!-- FILTER BUTTONS -->
+
+<div class="filters">
+
+    <button
+        id="allBtn"
+        class="filter active"
+        onclick="showAll()">
+        ✓ All
+    </button>
+
+    <button
+        id="centralBtn"
+        class="filter"
+        onclick="showCentral()">
+        Central Govt
+    </button>
+
+    <button
+        id="maharashtraBtn"
+        class="filter"
+        onclick="showMaharashtra()">
+        Maharashtra
+    </button>
+
+</div>
+
+
+<div id="count" class="count">
+    7 schemes available
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 1 -->
+<!-- ================================================= -->
+
+<div class="scheme maharashtra">
+
+    <div class="scheme-label">
+        ⚑ MAHARASHTRA
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            Magel Tyala Saur Krushi Pump Yojana
+        </div>
+
+        <div class="scheme-description">
+            Solar agricultural pump support scheme for farmers.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details1',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details1" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            Supports farmers in using solar-powered irrigation
+            systems for agricultural activities.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            Eligible farmers can receive support for solar
+            agricultural pump systems according to applicable
+            Maharashtra Government guidelines.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            Eligibility depends on farmer, land and irrigation
+            conditions specified by the applicable scheme guidelines.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 2 -->
+<!-- ================================================= -->
+
+<div class="scheme central">
+
+    <div class="scheme-label central">
+        ▦ CENTRAL GOV
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            PM-KISAN Samman Nidhi
+        </div>
+
+        <div class="scheme-description">
+            Income support scheme for eligible landholding
+            farmer families.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details2',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details2" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            Provides income support to eligible landholding
+            farmer families.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            Eligible farmer families receive ₹6,000 per year
+            in three equal installments through direct benefit
+            transfer.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            The scheme has eligibility conditions and exclusion
+            categories. Farmer families are identified according
+            to the scheme guidelines.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 3 -->
+<!-- ================================================= -->
+
+<div class="scheme central">
+
+    <div class="scheme-label central">
+        ▦ CENTRAL GOV
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            Pradhan Mantri Krishi Sinchayee Yojana
+        </div>
+
+        <div class="scheme-description">
+            Supports irrigation development and efficient
+            water management in agriculture.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details3',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details3" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            The scheme aims to expand irrigation coverage,
+            improve on-farm water-use efficiency and reduce
+            wastage of water.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            Supports irrigation development, water conservation
+            and efficient irrigation practices.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            Eligibility and support depend on the specific
+            component and implementing authority.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 4 -->
+<!-- ================================================= -->
+
+<div class="scheme central">
+
+    <div class="scheme-label central">
+        ▦ CENTRAL GOV
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            Soil Health Card Scheme
+        </div>
+
+        <div class="scheme-description">
+            Soil testing and nutrient information for better
+            fertilizer management.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details4',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details4" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            Helps farmers understand the nutrient status and
+            health of their agricultural soil.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            The Soil Health Card provides soil nutrient information
+            and recommendations for fertilizer quantities and
+            required soil amendments.
+        </p>
+
+        <h3>Information Provided</h3>
+
+        <p>
+            The card covers parameters such as pH, electrical
+            conductivity, organic carbon and macro and
+            micronutrients.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 5 -->
+<!-- ================================================= -->
+
+<div class="scheme central">
+
+    <div class="scheme-label central">
+        ▦ CENTRAL GOV
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            MGNREGS – Farm Pond
+        </div>
+
+        <div class="scheme-description">
+            Supports approved rural employment and
+            water-conservation works.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details5',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details5" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            Supports rural livelihood security and approved
+            works related to water conservation and
+            rural asset creation.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            Eligible rural households can receive wage employment
+            for approved works under MGNREGA.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            Eligibility follows the applicable MGNREGA rules
+            and local implementation requirements.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 6 -->
+<!-- ================================================= -->
+
+<div class="scheme maharashtra">
+
+    <div class="scheme-label">
+        ⚑ MAHARASHTRA
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            Magel Tyala Shettale
+        </div>
+
+        <div class="scheme-description">
+            Farm pond support for water storage and
+            protective irrigation.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details6',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details6" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            Encourages farm-level water storage through
+            farm ponds to support agricultural irrigation.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            Eligible farmers may receive financial assistance
+            according to the applicable Maharashtra scheme
+            guidelines.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            Eligibility depends on landholding and other
+            conditions specified by the Maharashtra Government.
+        </p>
+
+    </div>
+
+</div>
+
+
+<!-- ================================================= -->
+<!-- SCHEME 7 -->
+<!-- ================================================= -->
+
+<div class="scheme maharashtra">
+
+    <div class="scheme-label">
+        ⚑ MAHARASHTRA
+    </div>
+
+    <div class="scheme-content">
+
+        <div class="scheme-title">
+            Gopinath Munde Shetkari Apghat Vima
+        </div>
+
+        <div class="scheme-description">
+            Accident insurance support scheme for eligible
+            farmers in Maharashtra.
+        </div>
+
+        <button
+            class="details-btn"
+            onclick="toggleDetails('details7',this)">
+            ⓘ View Details
+        </button>
+
+    </div>
+
+    <div id="details7" class="details-box">
+
+        <h3>Purpose</h3>
+
+        <p>
+            Provides financial protection to eligible farmers
+            and their families in covered accidental situations.
+        </p>
+
+        <h3>Benefits</h3>
+
+        <p>
+            Financial assistance is provided according to the
+            applicable insurance scheme conditions.
+        </p>
+
+        <h3>Eligibility</h3>
+
+        <p>
+            Eligibility depends on the farmer category and
+            conditions specified by the Maharashtra Government.
+        </p>
+
+    </div>
+
+</div>
+
+
+<div id="noResult" class="no-result">
+    No schemes found.
+</div>
+
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   VIEW DETAILS
+========================================== */
+
+function toggleDetails(id,button){
+
+    var box = document.getElementById(id);
+
+    if(box.style.display === "block"){
+
+        box.style.display = "none";
+
+        button.innerHTML = "ⓘ View Details";
+
+    }
+    else{
+
+        box.style.display = "block";
+
+        button.innerHTML = "⌃ Hide Details";
+
+    }
+
+}
+
+
+/* ==========================================
+   REMOVE ACTIVE BUTTON
+========================================== */
+
+function clearActive(){
+
+    document.getElementById("allBtn")
+        .classList.remove("active");
+
+    document.getElementById("centralBtn")
+        .classList.remove("active");
+
+    document.getElementById("maharashtraBtn")
+        .classList.remove("active");
+
+}
+
+
+/* ==========================================
+   SHOW ALL
+========================================== */
+
+function showAll(){
+
+    clearActive();
+
+    document.getElementById("allBtn")
+        .classList.add("active");
+
+    var cards =
+        document.getElementsByClassName("scheme");
+
+    for(var i=0;i<cards.length;i++){
+
+        cards[i].style.display="block";
+
+    }
+
+    document.getElementById("count").innerHTML =
+        "7 schemes available";
+
+    document.getElementById("noResult").style.display="none";
+
+}
+
+
+/* ==========================================
+   SHOW CENTRAL
+========================================== */
+
+function showCentral(){
+
+    clearActive();
+
+    document.getElementById("centralBtn")
+        .classList.add("active");
+
+    var cards =
+        document.getElementsByClassName("scheme");
+
+    var total=0;
+
+    for(var i=0;i<cards.length;i++){
+
+        if(cards[i].classList.contains("central")){
+
+            cards[i].style.display="block";
+
+            total++;
+
+        }
+        else{
+
+            cards[i].style.display="none";
+
+        }
+
+    }
+
+    document.getElementById("count").innerHTML =
+        total + " schemes available";
+
+    document.getElementById("noResult").style.display="none";
+
+}
+
+
+/* ==========================================
+   SHOW MAHARASHTRA
+========================================== */
+
+function showMaharashtra(){
+
+    clearActive();
+
+    document.getElementById("maharashtraBtn")
+        .classList.add("active");
+
+    var cards =
+        document.getElementsByClassName("scheme");
+
+    var total=0;
+
+    for(var i=0;i<cards.length;i++){
+
+        if(cards[i].classList.contains("maharashtra")){
+
+            cards[i].style.display="block";
+
+            total++;
+
+        }
+        else{
+
+            cards[i].style.display="none";
+
+        }
+
+    }
+
+    document.getElementById("count").innerHTML =
+        total + " schemes available";
+
+    document.getElementById("noResult").style.display="none";
+
+}
+
+</script>
+
+</body>
+</html>

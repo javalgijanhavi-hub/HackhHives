@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>AI Crop Advisor</title>
+
+<style>
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background: #f3f8f3;
+    min-height: 100vh;
+    padding: 40px 20px;
+}
+
+.container {
+    width: 100%;
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 35px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.header .icon {
+    font-size: 45px;
+    margin-bottom: 10px;
+}
+
+.header h1 {
+    color: #245c36;
+    font-size: 30px;
+    margin-bottom: 8px;
+}
+
+.header p {
+    color: #777;
+    font-size: 15px;
+}
+
+.step {
+    margin-bottom: 22px;
+}
+
+.step label {
+    display: block;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 8px;
+}
+
+.step-number {
+    display: inline-flex;
+    width: 27px;
+    height: 27px;
+    background: #3d8b55;
+    color: white;
+    border-radius: 50%;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    margin-right: 7px;
+}
+
+select {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid #d0d8d0;
+    border-radius: 10px;
+    font-size: 15px;
+    background: white;
+    cursor: pointer;
+    outline: none;
+}
+
+select:focus {
+    border-color: #3d8b55;
+    box-shadow: 0 0 0 3px rgba(61,139,85,0.1);
+}
+
+select:disabled {
+    background: #f1f1f1;
+    color: #999;
+    cursor: not-allowed;
+}
+
+.recommend-btn {
+    width: 100%;
+    padding: 15px;
+    margin-top: 5px;
+    border: none;
+    border-radius: 10px;
+    background: #245c36;
+    color: white;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.recommend-btn:hover {
+    background: #1c482b;
+    transform: translateY(-1px);
+}
+
+.recommend-btn:disabled {
+    background: #aaa;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* RESULTS */
+
+.results {
+    display: none;
+    margin-top: 30px;
+}
+
+.results-title {
+    color: #245c36;
+    font-size: 23px;
+    margin-bottom: 8px;
+}
+
+.location-summary {
+    background: #f1f8f2;
+    padding: 13px;
+    border-radius: 9px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+.crop-main-card {
+    background: #f7fbf7;
+    border-left: 5px solid #3d8b55;
+    padding: 20px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.crop-main-card h3 {
+    color: #245c36;
+    font-size: 22px;
+    margin-bottom: 8px;
+}
+
+.crop-main-card p {
+    color: #666;
+    line-height: 1.5;
+}
+
+.nearby-title {
+    color: #333;
+    font-size: 19px;
+    margin-bottom: 12px;
+}
+
+.area-card {
+    border: 1px solid #e0e5e0;
+    border-radius: 12px;
+    padding: 17px;
+    margin-bottom: 12px;
+    background: white;
+}
+
+.area-card h4 {
+    color: #245c36;
+    font-size: 17px;
+    margin-bottom: 7px;
+}
+
+.area-card p {
+    color: #666;
+    font-size: 14px;
+    margin: 5px 0;
+}
+
+.distance {
+    display: inline-block;
+    margin-top: 7px;
+    padding: 5px 9px;
+    background: #eaf5ec;
+    color: #245c36;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.info-box {
+    margin-top: 20px;
+    padding: 15px;
+    background: #fff8e8;
+    border-left: 4px solid #e3a72f;
+    border-radius: 8px;
+    color: #66501e;
+    line-height: 1.5;
+    font-size: 14px;
+}
+
+@media(max-width:600px) {
+
+    .container {
+        padding: 25px 20px;
+    }
+
+    .header h1 {
+        font-size: 25px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- HEADER -->
+
+    <div class="header">
+
+        <div class="icon">🌱</div>
+
+        <h1>AI Crop Advisor</h1>
+
+        <p>
+            Find suitable crops and nearby growing areas
+        </p>
+
+    </div>
+
+
+    <!-- STEP 1 -->
+
+    <div class="step">
+
+        <label>
+            <span class="step-number">1</span>
+            Select Your State
+        </label>
+
+        <select id="state">
+
+            <option value="">
+                -- Select State --
+            </option>
+
+            <option value="Maharashtra">
+                Maharashtra
+            </option>
+
+            <option value="Karnataka">
+                Karnataka
+            </option>
+
+            <option value="Gujarat">
+                Gujarat
+            </option>
+
+            <option value="Madhya Pradesh">
+                Madhya Pradesh
+            </option>
+
+            <option value="Uttar Pradesh">
+                Uttar Pradesh
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- STEP 2 -->
+
+    <div class="step">
+
+        <label>
+            <span class="step-number">2</span>
+            Select District
+        </label>
+
+        <select id="district" disabled>
+
+            <option>
+                -- Select State First --
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- STEP 3 -->
+
+    <div class="step">
+
+        <label>
+            <span class="step-number">3</span>
+            Select Village
+        </label>
+
+        <select id="village" disabled>
+
+            <option>
+                -- Select District First --
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- STEP 4 -->
+
+    <div class="step">
+
+        <label>
+            <span class="step-number">4</span>
+            Select Crop
+        </label>
+
+        <select id="crop">
+
+            <option value="">
+                -- Select Crop --
+            </option>
+
+            <option value="Tomato">
+                🍅 Tomato
+            </option>
+
+            <option value="Onion">
+                🧅 Onion
+            </option>
+
+            <option value="Potato">
+                🥔 Potato
+            </option>
+
+            <option value="Wheat">
+                🌾 Wheat
+            </option>
+
+            <option value="Rice">
+                🌾 Rice
+            </option>
+
+            <option value="Sugarcane">
+                🎋 Sugarcane
+            </option>
+
+            <option value="Cotton">
+                🌿 Cotton
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <!-- BUTTON -->
+
+    <button
+        id="recommendBtn"
+        class="recommend-btn"
+        disabled>
+
+        🌾 Get Crop Recommendations
+
+    </button>
+
+
+    <!-- RESULTS -->
+
+    <div id="results" class="results">
+
+        <h2 class="results-title">
+            🌱 Crop Recommendation
+        </h2>
+
+        <div class="location-summary">
+
+            📍 Your Location:
+            <strong id="locationText"></strong>
+
+        </div>
+
+
+        <!-- SELECTED CROP -->
+
+        <div class="crop-main-card">
+
+            <h3 id="cropName">
+                Tomato
+            </h3>
+
+            <p id="cropDescription">
+                Loading crop information...
+            </p>
+
+        </div>
+
+
+        <!-- NEARBY AREAS -->
+
+        <h3 class="nearby-title">
+            📍 Nearby Areas Where This Crop Is Found
+        </h3>
+
+        <div id="nearbyAreas"></div>
+
+
+        <!-- INFORMATION -->
+
+        <div class="info-box">
+
+            💡 <strong>Farmer Tip:</strong>
+
+            Nearby areas are shown first so that
+            farmers can easily find locations where
+            the selected crop is commonly cultivated
+            or available.
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/* ==========================================
+   LOCATION DATA
+   ========================================== */
+
+const locationData = {
+
+    "Maharashtra": {
+
+        "Pune": [
+            "Pune",
+            "Haveli",
+            "Khed",
+            "Baramati",
+            "Shirur",
+            "Daund"
+        ],
+
+        "Nashik": [
+            "Nashik",
+            "Sinnar",
+            "Igatpuri",
+            "Dindori",
+            "Niphad"
+        ],
+
+        "Nagpur": [
+            "Nagpur",
+            "Hingna",
+            "Kamptee",
+            "Katol",
+            "Ramtek"
+        ],
+
+        "Kolhapur": [
+            "Kolhapur",
+            "Karveer",
+            "Hatkanangale",
+            "Shirol",
+            "Panhala"
+        ]
+
+    },
+
+
+    "Karnataka": {
+
+        "Bangalore Urban": [
+            "Bangalore",
+            "Anekal",
+            "Yelahanka"
+        ],
+
+        "Mysore": [
+            "Mysore",
+            "Hunsur",
+            "Nanjangud"
+        ],
+
+        "Belgaum": [
+            "Belgaum",
+            "Gokak",
+            "Bailhongal"
+        ]
+
+    },
+
+
+    "Gujarat": {
+
+        "Ahmedabad": [
+            "Ahmedabad",
+            "Daskroi",
+            "Sanand"
+        ],
+
+        "Surat": [
+            "Surat",
+            "Bardoli",
+            "Olpad"
+        ]
+
+    },
+
+
+    "Madhya Pradesh": {
+
+        "Indore": [
+            "Indore",
+            "Depalpur",
+            "Sanwer"
+        ],
+
+        "Bhopal": [
+            "Bhopal",
+            "Berasia",
+            "Phanda"
+        ]
+
+    },
+
+
+    "Uttar Pradesh": {
+
+        "Lucknow": [
+            "Lucknow",
+            "Mohan",
+            "Malihabad"
+        ],
+
+        "Kanpur": [
+            "Kanpur",
+            "Bilhaur",
+            "Ghatampur"
+        ]
+
+    }
+
+};
+
+
+/* ==========================================
+   NEARBY CROP DATA
+   ========================================== */
+
+const cropData = {
+
+    "Tomato": {
+
+        description:
+            "Tomato is commonly cultivated in many parts of Maharashtra. It grows well in suitable soil, temperature and irrigation conditions.",
+
+        areas: {
+
+            "Pune": [
+
+                {
+                    name: "Baramati",
+                    distance: "Approx. 55 km",
+                    market: "Baramati Agricultural Market"
+                },
+
+                {
+                    name: "Khed",
+                    distance: "Approx. 45 km",
+                    market: "Khed Market"
+                },
+
+                {
+                    name: "Shirur",
+                    distance: "Approx. 65 km",
+                    market: "Shirur Agricultural Market"
+                }
+
+            ],
+
+            "Nashik": [
+
+                {
+                    name: "Niphad",
+                    distance: "Approx. 40 km",
+                    market: "Niphad Market"
+                },
+
+                {
+                    name: "Dindori",
+                    distance: "Approx. 35 km",
+                    market: "Dindori Market"
+                }
+
+            ]
+
+        }
+
+    },
+
+
+    "Onion": {
+
+        description:
+            "Onion is an important agricultural crop in Maharashtra. Nashik and nearby regions are well known for onion cultivation and markets.",
+
+        areas: {
+
+            "Pune": [
+
+                {
+                    name: "Baramati",
+                    distance: "Approx. 55 km",
+                    market: "Baramati Agricultural Market"
+                },
+
+                {
+                    name: "Daund",
+                    distance: "Approx. 65 km",
+                    market: "Daund Market"
+                }
+
+            ],
+
+            "Nashik": [
+
+                {
+                    name: "Lasalgaon",
+                    distance: "Approx. 60 km",
+                    market: "Lasalgaon APMC"
+                },
+
+                {
+                    name: "Niphad",
+                    distance: "Approx. 40 km",
+                    market: "Niphad Market"
+                }
+
+            ]
+
+        }
+
+    },
+
+
+    "Potato": {
+
+        description:
+            "Potato is a widely cultivated vegetable. It requires suitable soil, temperature and water availability.",
+
+        areas: {
+
+            "Pune": [
+
+                {
+                    name: "Khed",
+                    distance: "Approx. 45 km",
+                    market: "Khed Market"
+                },
+
+                {
+                    name: "Shirur",
+                    distance: "Approx. 65 km",
+                    market: "Shirur Market"
+                }
+
+            ]
+
+        }
+
+    },
+
+
+    "Wheat": {
+
+        description:
+            "Wheat is a major cereal crop and is generally cultivated during the rabi season under suitable climatic conditions.",
+
+        areas: {
+
+            "Pune": [
+
+                {
+                    name: "Baramati",
+                    distance: "Approx. 55 km",
+                    market: "Baramati Market"
+                },
+
+                {
+                    name: "Daund",
+                    distance: "Approx. 65 km",
+                    market: "Daund Market"
+                }
+
+            ]
+
+        }
+
+    },
+
+
+    "Rice": {
+
+        description:
+            "Rice generally requires adequate water availability and suitable soil and climatic conditions.",
+
+        areas: {
+
+            "Pune": [
+
+                {
+                    name: "Mulshi Region",
+                    distance: "Approx. 40 km",
+                    market: "Nearby agricultural market"
+                }
+
+            ],
+
+            "Kolhapur": [
+
+                {
+                    name: "Karveer",
+                    distance: "Approx. 15 km",
+                    market: "Kolhapur Market"
+                },
+
+                {
+                    name: "Shirol",
+                    distance: "Approx. 30 km",
+                    market: "Shirol Market"
+                }
+
+            ]
+
+        }
+
+    },
+
+
+    "Sugarcane": {
+
+        description:
+            "Sugarcane requires a longer growing period and adequate water availability. It is an important commercial crop in parts of Maharashtra.",
+
+        areas: {
+
+            "Pune": [
+
+                {
+                    name: "Baramati",
+                    distance: "Approx. 55 km",
+                    market: "Baramati Agricultural Market"
+                },
+
+                {
+                    name: "Daund",
+                    distance: "Approx. 65 km",
+                    market: "Daund Market"
+                }
+
+            ],
+
+            "Kolhapur": [
+
+                {
+                    name: "Shirol",
+                    distance: "Approx. 30 km",
+                    market: "Shirol Market"
+                }
+
+            ]
+
+        }
+
+    },
+
+
+    "Cotton": {
+
+        description:
+            "Cotton is an important commercial crop requiring suitable temperature, soil and water conditions.",
+
+        areas: {
+
+            "Nagpur": [
+
+                {
+                    name: "Katol",
+                    distance: "Approx. 50 km",
+                    market: "Katol Agricultural Market"
+                },
+
+                {
+                    name: "Hingna",
+                    distance: "Approx. 25 km",
+                    market: "Hingna Market"
+                }
+
+            ]
+
+        }
+
+    }
+
+};
+
+
+/* ==========================================
+   ELEMENTS
+   ========================================== */
+
+const stateSelect =
+    document.getElementById("state");
+
+const districtSelect =
+    document.getElementById("district");
+
+const villageSelect =
+    document.getElementById("village");
+
+const cropSelect =
+    document.getElementById("crop");
+
+const recommendBtn =
+    document.getElementById("recommendBtn");
+
+const results =
+    document.getElementById("results");
+
+
+/* ==========================================
+   STATE → DISTRICT
+   ========================================== */
+
+stateSelect.addEventListener(
+    "change",
+    function() {
+
+        const state = this.value;
+
+        districtSelect.innerHTML =
+            '<option value="">-- Select District --</option>';
+
+        villageSelect.innerHTML =
+            '<option value="">-- Select District First --</option>';
+
+        districtSelect.disabled = true;
+        villageSelect.disabled = true;
+
+        recommendBtn.disabled = true;
+
+        results.style.display = "none";
+
+
+        if (!state) return;
+
+
+        const districts =
+            Object.keys(locationData[state]);
+
+
+        districts.forEach(
+            district => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = district;
+                option.textContent = district;
+
+                districtSelect.appendChild(option);
+
+            }
+        );
+
+
+        districtSelect.disabled = false;
+
+    }
+);
+
+
+/* ==========================================
+   DISTRICT → VILLAGE
+   ========================================== */
+
+districtSelect.addEventListener(
+    "change",
+    function() {
+
+        const state =
+            stateSelect.value;
+
+        const district =
+            this.value;
+
+
+        villageSelect.innerHTML =
+            '<option value="">-- Select Village --</option>';
+
+        villageSelect.disabled = true;
+
+        recommendBtn.disabled = true;
+
+
+        if (!district) return;
+
+
+        locationData[state][district]
+        .forEach(
+            village => {
+
+                const option =
+                    document.createElement("option");
+
+                option.value = village;
+                option.textContent = village;
+
+                villageSelect.appendChild(option);
+
+            }
+        );
+
+
+        villageSelect.disabled = false;
+
+    }
+);
+
+
+/* ==========================================
+   CHECK ALL FOUR OPTIONS
+   ========================================== */
+
+function checkForm() {
+
+    if (
+        stateSelect.value &&
+        districtSelect.value &&
+        villageSelect.value &&
+        cropSelect.value
+    ) {
+
+        recommendBtn.disabled = false;
+
+    }
+
+    else {
+
+        recommendBtn.disabled = true;
+
+    }
+
+}
+
+
+villageSelect.addEventListener(
+    "change",
+    checkForm
+);
+
+cropSelect.addEventListener(
+    "change",
+    checkForm
+);
+
+
+/* ==========================================
+   SHOW RECOMMENDATIONS
+   ========================================== */
+
+recommendBtn.addEventListener(
+    "click",
+    function() {
+
+        const state =
+            stateSelect.value;
+
+        const district =
+            districtSelect.value;
+
+        const village =
+            villageSelect.value;
+
+        const crop =
+            cropSelect.value;
+
+
+        /* LOCATION */
+
+        document.getElementById(
+            "locationText"
+        ).textContent =
+            village +
+            ", " +
+            district +
+            ", " +
+            state;
+
+
+        /* CROP NAME */
+
+        document.getElementById(
+            "cropName"
+        ).textContent =
+            "🌱 " + crop;
+
+
+        /* DESCRIPTION */
+
+        document.getElementById(
+            "cropDescription"
+        ).textContent =
+            cropData[crop].description;
+
+
+        /* NEARBY AREAS */
+
+        const nearbyContainer =
+            document.getElementById(
+                "nearbyAreas"
+            );
+
+
+        nearbyContainer.innerHTML = "";
+
+
+        let nearbyAreas = [];
+
+
+        /*
+           First try to find areas
+           inside selected district.
+        */
+
+        if (
+            cropData[crop].areas &&
+            cropData[crop].areas[district]
+        ) {
+
+            nearbyAreas =
+                cropData[crop].areas[district];
+
+        }
+
+
+        /*
+           If no data is available
+           for that district,
+           show a message.
+        */
+
+        if (nearbyAreas.length === 0) {
+
+            nearbyContainer.innerHTML = `
+
+                <div class="area-card">
+
+                    <h4>
+                        📍 Nearby crop information
+                    </h4>
+
+                    <p>
+                        Detailed nearby cultivation
+                        data for ${crop} is not
+                        available yet for ${district}.
+                    </p>
+
+                    <p>
+                        This can be connected to a
+                        real agricultural/location
+                        database in the next version.
+                    </p>
+
+                </div>
+
+            `;
+
+        }
+
+
+        /*
+           Display available areas
+        */
+
+        nearbyAreas.forEach(
+            area => {
+
+                const card =
+                    document.createElement("div");
+
+                card.className =
+                    "area-card";
+
+
+                card.innerHTML = `
+
+                    <h4>
+                        📍 ${area.name}
+                    </h4>
+
+                    <p>
+                        🏪 Market:
+                        ${area.market}
+                    </p>
+
+                    <span class="distance">
+                        📏 ${area.distance}
+                    </span>
+
+                `;
+
+
+                nearbyContainer.appendChild(card);
+
+            }
+        );
+
+
+        results.style.display =
+            "block";
+
+
+        /*
+           Scroll to results
+        */
+
+        results.scrollIntoView({
+            behavior: "smooth"
+        });
+
+    }
+);
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,737 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FarmerAI - Disease Detection</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f5f8ef;
+            color: #29452d;
+        }
+
+
+        /* ================= HEADER ================= */
+
+        .header {
+
+            background: white;
+
+            padding: 18px 6%;
+
+            border-bottom: 1px solid #e1e8dc;
+
+            display: flex;
+
+            align-items: center;
+
+            gap: 12px;
+
+        }
+
+
+        .logo-icon {
+
+            width: 44px;
+            height: 44px;
+
+            display: flex;
+
+            align-items: center;
+            justify-content: center;
+
+            background: #e6f0dc;
+
+            border-radius: 13px;
+
+            font-size: 23px;
+
+        }
+
+
+        .logo-text h2 {
+
+            margin: 0;
+
+            color: #3f7038;
+
+            font-size: 20px;
+
+        }
+
+
+        .logo-text p {
+
+            margin: 2px 0 0;
+
+            color: #879284;
+
+            font-size: 10px;
+
+        }
+
+
+        /* ================= CONTAINER ================= */
+
+        .container {
+
+            max-width: 650px;
+
+            margin: 40px auto;
+
+            padding: 0 20px;
+
+        }
+
+
+        /* ================= CARD ================= */
+
+        .card {
+
+            background: white;
+
+            padding: 30px;
+
+            border-radius: 22px;
+
+            border: 1px solid #e1e8dc;
+
+            box-shadow:
+                0 10px 35px rgba(48, 76, 44, 0.08);
+
+        }
+
+
+        h1 {
+
+            text-align: center;
+
+            color: #2e432f;
+
+            margin-top: 0;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .subtitle {
+
+            text-align: center;
+
+            color: #7a8879;
+
+            font-size: 14px;
+
+            margin-top: -18px;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        /* ================= FORM ================= */
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin: 18px 0 8px;
+
+            color: #40533d;
+
+        }
+
+
+        select,
+        input[type="file"] {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: 1px solid #d5e1d0;
+
+            border-radius: 10px;
+
+            background: #fafcf9;
+
+            font-size: 14px;
+
+        }
+
+
+        select:focus {
+
+            outline: none;
+
+            border-color: #6c9d54;
+
+        }
+
+
+        /* ================= PREVIEW ================= */
+
+        .preview {
+
+            width: 100%;
+
+            max-height: 320px;
+
+            object-fit: contain;
+
+            margin-top: 18px;
+
+            border-radius: 15px;
+
+            display: none;
+
+            border: 1px solid #dce7d7;
+
+        }
+
+
+        /* ================= BUTTON ================= */
+
+        button {
+
+            width: 100%;
+
+            padding: 15px;
+
+            margin-top: 18px;
+
+            border: 0;
+
+            border-radius: 12px;
+
+            background: linear-gradient(
+                135deg,
+                #4f873d,
+                #70a950
+            );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        button:hover {
+
+            transform: translateY(-1px);
+
+        }
+
+
+        .remove {
+
+            background: #edf5e9;
+
+            color: #4f873d;
+
+            border: 1px solid #b9cfb2;
+
+            display: none;
+
+        }
+
+
+        /* ================= RESULT ================= */
+
+        .result {
+
+            display: none;
+
+            margin-top: 25px;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            background: #f1f8ed;
+
+            border: 1px solid #c8ddc0;
+
+        }
+
+
+        .result h2 {
+
+            margin-top: 0;
+
+            color: #3f7038;
+
+            text-align: center;
+
+        }
+
+
+        .row {
+
+            display: flex;
+
+            justify-content: space-between;
+
+            padding: 13px 0;
+
+            border-bottom: 1px solid #d8e5d4;
+
+        }
+
+
+        .row:last-child {
+
+            border-bottom: none;
+
+        }
+
+
+        .value {
+
+            font-weight: bold;
+
+            color: #3f8738;
+
+        }
+
+
+        /* ================= BACK ================= */
+
+        .back-button {
+
+            background: transparent;
+
+            color: #4f873d;
+
+            border: none;
+
+            margin-bottom: 10px;
+
+            padding: 5px;
+
+            width: auto;
+
+            font-size: 14px;
+
+        }
+
+
+        @media(max-width:600px) {
+
+            .card {
+
+                padding: 22px;
+
+            }
+
+            .container {
+
+                margin-top: 25px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+    <!-- ================= HEADER ================= -->
+
+    <header class="header">
+
+        <div class="logo-icon">
+            🌾
+        </div>
+
+        <div class="logo-text">
+
+            <h2>FarmerAI</h2>
+
+            <p>Smart Farming Assistant</p>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ================= MAIN ================= -->
+
+    <div class="container">
+
+
+        <button
+            class="back-button"
+            onclick="goBack()"
+        >
+
+            ← Back to FarmerAI
+
+        </button>
+
+
+        <div class="card">
+
+
+            <h1>
+                🌱 Disease Detection
+            </h1>
+
+
+            <p class="subtitle">
+
+                Upload a clear leaf image to check
+                for possible crop diseases.
+
+            </p>
+
+
+            <!-- CROP -->
+
+            <label>
+                Select Crop
+            </label>
+
+
+            <select id="crop">
+
+                <option value="">
+                    -- Select Crop --
+                </option>
+
+                <option value="Tomato">
+                    Tomato
+                </option>
+
+                <option value="Potato">
+                    Potato
+                </option>
+
+                <option value="Apple">
+                    Apple
+                </option>
+
+                <option value="Corn">
+                    Corn
+                </option>
+
+                <option value="Grape">
+                    Grape
+                </option>
+
+                <option value="Pepper">
+                    Pepper
+                </option>
+
+                <option value="Soybean">
+                    Soybean
+                </option>
+
+            </select>
+
+
+
+            <!-- IMAGE -->
+
+            <label>
+                Upload Leaf Image
+            </label>
+
+
+            <input
+                type="file"
+                id="leafImage"
+                accept="image/*"
+                onchange="showImage()"
+            >
+
+
+            <img
+                id="preview"
+                class="preview"
+                alt="Leaf preview"
+            >
+
+
+            <button
+                id="removeButton"
+                class="remove"
+                onclick="removeImage()"
+            >
+
+                Remove Image
+
+            </button>
+
+
+
+            <!-- DETECT -->
+
+            <button onclick="detectDisease()">
+
+                🔍 Detect Disease
+
+            </button>
+
+
+
+            <!-- RESULT -->
+
+            <div
+                id="result"
+                class="result"
+            >
+
+                <h2>
+                    Detection Result
+                </h2>
+
+
+                <div class="row">
+
+                    <span>
+                        Crop
+                    </span>
+
+                    <span
+                        id="resultCrop"
+                        class="value"
+                    ></span>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        Possible Disease
+                    </span>
+
+                    <span
+                        id="resultDisease"
+                        class="value"
+                    ></span>
+
+                </div>
+
+
+                <div class="row">
+
+                    <span>
+                        Confidence
+                    </span>
+
+                    <span
+                        id="resultConfidence"
+                        class="value"
+                    ></span>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= JAVASCRIPT ================= -->
+
+    <script>
+
+        function showImage() {
+
+            const file =
+                document.getElementById("leafImage").files[0];
+
+            if (!file) {
+                return;
+            }
+
+            const preview =
+                document.getElementById("preview");
+
+            const removeButton =
+                document.getElementById("removeButton");
+
+            const reader =
+                new FileReader();
+
+
+            reader.onload = function(event) {
+
+                preview.src =
+                    event.target.result;
+
+                preview.style.display =
+                    "block";
+
+                removeButton.style.display =
+                    "block";
+
+            };
+
+
+            reader.readAsDataURL(file);
+
+        }
+
+
+
+        function removeImage() {
+
+            document.getElementById("leafImage").value = "";
+
+            document.getElementById("preview").src = "";
+
+            document.getElementById("preview").style.display =
+                "none";
+
+            document.getElementById("removeButton").style.display =
+                "none";
+
+            document.getElementById("result").style.display =
+                "none";
+
+        }
+
+
+
+        function detectDisease() {
+
+            const crop =
+                document.getElementById("crop").value;
+
+            const image =
+                document.getElementById("leafImage").files[0];
+
+
+            if (crop === "") {
+
+                alert("Please select a crop.");
+
+                return;
+
+            }
+
+
+            if (!image) {
+
+                alert("Please upload a leaf image.");
+
+                return;
+
+            }
+
+
+            let disease = "";
+            let confidence = "";
+
+
+            if (crop === "Tomato") {
+
+                disease = "Early Blight";
+                confidence = "94%";
+
+            }
+
+            else if (crop === "Potato") {
+
+                disease = "Late Blight";
+                confidence = "92%";
+
+            }
+
+            else if (crop === "Apple") {
+
+                disease = "Apple Scab";
+                confidence = "93%";
+
+            }
+
+            else if (crop === "Corn") {
+
+                disease = "Common Rust";
+                confidence = "91%";
+
+            }
+
+            else if (crop === "Grape") {
+
+                disease = "Leaf Blight";
+                confidence = "90%";
+
+            }
+
+            else if (crop === "Pepper") {
+
+                disease = "Bacterial Spot";
+                confidence = "89%";
+
+            }
+
+            else if (crop === "Soybean") {
+
+                disease = "Healthy Leaf";
+                confidence = "95%";
+
+            }
+
+
+            document.getElementById("resultCrop").textContent =
+                crop;
+
+            document.getElementById("resultDisease").textContent =
+                disease;
+
+            document.getElementById("resultConfidence").textContent =
+                confidence;
+
+
+            document.getElementById("result").style.display =
+                "block";
+
+        }
+
+
+
+        function goBack() {
+
+            window.location.href = "index.html";
+
+        }
+
+    </script>
+
+
+</body>
+
+</html>
